@@ -2,6 +2,9 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import * as Tone from 'tone';
 import transmissions from '../data/transmissions.json';
 import { applyLayerLevels, createAudioEngine } from '../audio/engine.js';
+import { derivePhase, pickNext } from './picker.js';
+
+const MAX_PHASE = transmissions.reduce((m, t) => Math.max(m, t.phase), 0);
 
 const INITIAL_LAYERS = {
   ocean: 0.6,
@@ -39,7 +42,8 @@ export function useStation() {
   const [typingText, setTypingText] = useState('');
   const [isTyping, setIsTyping] = useState(false);
   const [logbook, setLogbook] = useState([]);
-  const [transmissionIndex, setTxIndex] = useState(0);
+  const [seen, setSeen] = useState(() => new Set());
+  const [runEnded, setRunEnded] = useState(false);
   const [waiting, setWaiting] = useState(false);
   const [gamePhase, setGamePhase] = useState(0);
   const [fuelLevel, setFuelLevel] = useState(100);
@@ -116,16 +120,36 @@ export function useStation() {
   }, []);
 
   // --- transmission queueing ---
+  // Picker reads live state via refs so the callback identity stays stable.
+  const seenRef = useRef(seen);
+  const flagsRef = useRef(flags);
+  useEffect(() => { seenRef.current = seen; }, [seen]);
+  useEffect(() => { flagsRef.current = flags; }, [flags]);
+
   const queueTransmission = useCallback(() => {
-    if (transmissionIndex >= transmissions.length) return;
+    const phase = derivePhase(flagsRef.current, MAX_PHASE);
+    const tx = pickNext(transmissions, {
+      seen: seenRef.current,
+      flags: flagsRef.current,
+      phase,
+    });
+    if (!tx) {
+      setRunEnded(true);
+      return;
+    }
+
     const delay = 3000 + Math.random() * 5000;
     setWaiting(true);
     setTimeout(() => {
-      const tx = transmissions[transmissionIndex];
       setCurrent(tx);
       setDisplayed([]);
       setWaiting(false);
       setGamePhase(tx.phase);
+      setSeen((prev) => {
+        const next = new Set(prev);
+        next.add(tx.id);
+        return next;
+      });
 
       if (tx.phase >= 2) {
         setLayers((l) => ({
@@ -145,11 +169,11 @@ export function useStation() {
       };
       typeNext();
     }, delay);
-  }, [transmissionIndex, typeFragment]);
+  }, [typeFragment]);
 
   // Kick off the first transmission once audio is live.
   useEffect(() => {
-    if (audioStarted && transmissionIndex === 0 && !currentTransmission) {
+    if (audioStarted && seen.size === 0 && !currentTransmission) {
       const id = setTimeout(() => queueTransmission(), 4000);
       return () => clearTimeout(id);
     }
@@ -189,7 +213,6 @@ export function useStation() {
         });
       }
 
-      setTxIndex((prev) => prev + 1);
       setTimeout(() => queueTransmission(), 2000);
     },
     [currentTransmission, queueTransmission]
@@ -205,8 +228,9 @@ export function useStation() {
     typingText,
     isTyping,
     logbook,
-    transmissionIndex,
+    seenCount: seen.size,
     transmissionTotal: transmissions.length,
+    runEnded,
     waiting,
     gamePhase,
     fuelLevel,

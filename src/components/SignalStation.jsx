@@ -59,6 +59,7 @@ export default function SignalStation() {
         processed={station.logbook.length}
         total={station.transmissionTotal}
         fuelLevel={station.fuelLevel}
+        runEnded={station.runEnded}
       />
 
       <GlobalStyles />
@@ -160,8 +161,7 @@ function RadioPanel({ station }) {
     typingText,
     isTyping,
     waiting,
-    transmissionIndex,
-    transmissionTotal,
+    runEnded,
     decide,
   } = station;
 
@@ -178,7 +178,7 @@ function RadioPanel({ station }) {
         <div style={styles.scanlines} />
         {!currentTransmission && !waiting ? (
           <div style={styles.placeholder}>
-            {transmissionIndex >= transmissionTotal
+            {runEnded
               ? 'No more transmissions. The silence is absolute.'
               : 'Monitoring frequencies...'}
           </div>
@@ -290,7 +290,7 @@ function Logbook({ entries }) {
   );
 }
 
-function StatusBar({ processed, total, fuelLevel }) {
+function StatusBar({ processed, total, fuelLevel, runEnded }) {
   const message =
     fuelLevel <= 0
       ? 'THE LIGHT IS OUT.'
@@ -301,7 +301,10 @@ function StatusBar({ processed, total, fuelLevel }) {
       : 'beacon operational';
   return (
     <div style={styles.statusBar}>
-      <span>Vessels processed: {processed} / {total}</span>
+      <span>
+        Vessels processed: {processed}
+        {runEnded ? ` / ${total}` : ''}
+      </span>
       <span>{message}</span>
     </div>
   );

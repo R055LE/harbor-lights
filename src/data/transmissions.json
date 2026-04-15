@@ -138,5 +138,42 @@
       "INVESTIGATE": { "fuel": -10, "flags": { "corruption": 4 } },
       "REFUEL":      { "fuel":  40, "flags": { "corruption": 5 } }
     }
+  },
+  {
+    "id": "t9",
+    "callsign": "HARBORMASTER",
+    "freq": "156.025",
+    "phase": 1,
+    "requires": { "minFlags": { "trust": 2 } },
+    "fragments": [
+      "Harbormaster Vance for the keeper, over...",
+      "Your numbers are clean. Cleanest we've seen all season...",
+      "Don't get cute. Just keep doing what you're doing...",
+      "And if a vessel ever feels wrong — trust that feeling."
+    ],
+    "outcomes": {
+      "DOCK":        { "fuel": -1, "flags": { "trust":  2 } },
+      "REJECT":      {              "flags": { "trust": -3 } },
+      "INVESTIGATE": { "fuel": -2, "flags": { "trust":  1 } }
+    }
+  },
+  {
+    "id": "t10",
+    "callsign": "FV NETSONG",
+    "freq": "156.510",
+    "phase": 2,
+    "requires": { "minFlags": { "corruption": 2 } },
+    "fragments": [
+      "...keeper, this is Netsong, please respond...",
+      "Something in the hold is singing the foghorn back at us...",
+      "It knows the rhythm. It knows the rhythm before we do...",
+      "We are not asking to dock. We are asking what to do."
+    ],
+    "outcomes": {
+      "DOCK":        { "fuel":  -6, "flags": { "corruption": 2 } },
+      "REJECT":      {               "flags": { "corruption": 1, "trust": -1 } },
+      "INVESTIGATE": { "fuel":  -4, "flags": { "corruption": 1 } },
+      "REFUEL":      { "fuel":  20, "flags": { "corruption": 3 } }
+    }
   }
 ]
