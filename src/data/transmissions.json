@@ -1,0 +1,98 @@
+[
+  {
+    "id": "t1",
+    "callsign": "MV CLARITY",
+    "freq": "156.800",
+    "phase": 0,
+    "fragments": [
+      "MV Clarity requesting approach...",
+      "Cargo: medical supplies, 40 tonnes...",
+      "ETA harbor: 0230 hours...",
+      "Crew complement: 14, all accounted for."
+    ]
+  },
+  {
+    "id": "t2",
+    "callsign": "TUG RESOLUTE",
+    "freq": "156.300",
+    "phase": 0,
+    "fragments": [
+      "Tug Resolute inbound from south channel...",
+      "Towing disabled vessel, name unclear...",
+      "Requesting berth assignment...",
+      "Weather deteriorating. Visibility 200m."
+    ]
+  },
+  {
+    "id": "t3",
+    "callsign": "FV SECOND DAWN",
+    "freq": "156.450",
+    "phase": 1,
+    "fragments": [
+      "Fishing vessel Second Dawn requesting harbor...",
+      "Nets are... full. We need to offload...",
+      "Catch is unlike anything we've... [static]",
+      "One crewman won't stop staring at the water."
+    ]
+  },
+  {
+    "id": "t4",
+    "callsign": "RV PELAGIC",
+    "freq": "156.700",
+    "phase": 1,
+    "fragments": [
+      "Research vessel Pelagic, urgent request...",
+      "Sonar readings are... wrong. Depth is wrong...",
+      "We measured 11,000 meters. Charts say 200...",
+      "Dr. Kessler insists we continue. Overruling her."
+    ]
+  },
+  {
+    "id": "t5",
+    "callsign": "MV ░░░░░░",
+    "freq": "1█6.000",
+    "phase": 2,
+    "fragments": [
+      "[static] ...requesting... [static] ...approach...",
+      "Cargo manifest reads: [INCOMPREHENSIBLE]",
+      "Crew complement: 14. No. 15. No. We keep counting...",
+      "The wake behind us is the wrong color."
+    ]
+  },
+  {
+    "id": "t6",
+    "callsign": "UNKNOWN",
+    "freq": "000.000",
+    "phase": 2,
+    "fragments": [
+      "This is... I was the keeper before you...",
+      "I left the light on. Why did you change the frequency...",
+      "The ships aren't coming TO the harbor...",
+      "They're coming FROM underneath it."
+    ]
+  },
+  {
+    "id": "t7",
+    "callsign": "LIGHTHOUSE",
+    "freq": "YOUR.FREQ",
+    "phase": 3,
+    "fragments": [
+      "This is your station calling your station...",
+      "You logged vessel MV Clarity at 0230...",
+      "MV Clarity sank in 1987...",
+      "Check your logbook. Check your hands."
+    ]
+  },
+  {
+    "id": "t8",
+    "callsign": "THE LIGHT",
+    "freq": "———.———",
+    "phase": 3,
+    "fragments": [
+      "You were right to keep the light on...",
+      "It keeps us below the surface...",
+      "We are very patient...",
+      "When the fuel runs out, we will be so grateful."
+    ]
+  }
+]
