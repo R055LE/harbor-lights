@@ -9,7 +9,12 @@
       "Cargo: medical supplies, 40 tonnes...",
       "ETA harbor: 0230 hours...",
       "Crew complement: 14, all accounted for."
-    ]
+    ],
+    "outcomes": {
+      "DOCK":        { "fuel": -2, "flags": { "trust":  1 } },
+      "REJECT":      {              "flags": { "trust": -2 } },
+      "INVESTIGATE": { "fuel": -3, "flags": { "trust":  1 } }
+    }
   },
   {
     "id": "t2",
@@ -21,7 +26,12 @@
       "Towing disabled vessel, name unclear...",
       "Requesting berth assignment...",
       "Weather deteriorating. Visibility 200m."
-    ]
+    ],
+    "outcomes": {
+      "DOCK":        { "fuel": -2, "flags": { "trust":  1 } },
+      "REJECT":      {              "flags": { "trust": -1 } },
+      "INVESTIGATE": { "fuel": -3, "flags": { "trust":  1 } }
+    }
   },
   {
     "id": "t3",
@@ -33,7 +43,12 @@
       "Nets are... full. We need to offload...",
       "Catch is unlike anything we've... [static]",
       "One crewman won't stop staring at the water."
-    ]
+    ],
+    "outcomes": {
+      "DOCK":        { "fuel": -3, "flags": { "corruption": 1 } },
+      "REJECT":      {              "flags": { "trust": -1 } },
+      "INVESTIGATE": { "fuel": -4, "flags": { "trust":  1, "corruption": 1 } }
+    }
   },
   {
     "id": "t4",
@@ -45,7 +60,12 @@
       "Sonar readings are... wrong. Depth is wrong...",
       "We measured 11,000 meters. Charts say 200...",
       "Dr. Kessler insists we continue. Overruling her."
-    ]
+    ],
+    "outcomes": {
+      "DOCK":        { "fuel": -3, "flags": { "corruption": 1 } },
+      "REJECT":      {              "flags": { "trust": -1 } },
+      "INVESTIGATE": { "fuel": -4, "flags": { "corruption": 2 } }
+    }
   },
   {
     "id": "t5",
@@ -57,7 +77,13 @@
       "Cargo manifest reads: [INCOMPREHENSIBLE]",
       "Crew complement: 14. No. 15. No. We keep counting...",
       "The wake behind us is the wrong color."
-    ]
+    ],
+    "outcomes": {
+      "DOCK":        { "fuel": -10, "flags": { "corruption": 3 } },
+      "REJECT":      {               "flags": { "corruption": 1 } },
+      "INVESTIGATE": { "fuel":  -5, "flags": { "corruption": 2 } },
+      "REFUEL":      { "fuel":  25, "flags": { "corruption": 2 } }
+    }
   },
   {
     "id": "t6",
@@ -69,7 +95,13 @@
       "I left the light on. Why did you change the frequency...",
       "The ships aren't coming TO the harbor...",
       "They're coming FROM underneath it."
-    ]
+    ],
+    "outcomes": {
+      "DOCK":        { "fuel":  -8, "flags": { "corruption": 2 } },
+      "REJECT":      {               "flags": { "trust": -1, "corruption": 1 } },
+      "INVESTIGATE": { "fuel":  -3, "flags": { "corruption": 1 } },
+      "REFUEL":      { "fuel":  30, "flags": { "corruption": 3 } }
+    }
   },
   {
     "id": "t7",
@@ -81,7 +113,13 @@
       "You logged vessel MV Clarity at 0230...",
       "MV Clarity sank in 1987...",
       "Check your logbook. Check your hands."
-    ]
+    ],
+    "outcomes": {
+      "DOCK":        { "fuel": -15, "flags": { "corruption": 4 } },
+      "REJECT":      {               "flags": { "corruption": 2 } },
+      "INVESTIGATE": { "fuel":  -5, "flags": { "corruption": 3 } },
+      "REFUEL":      { "fuel":  20, "flags": { "corruption": 4 } }
+    }
   },
   {
     "id": "t8",
@@ -93,6 +131,12 @@
       "It keeps us below the surface...",
       "We are very patient...",
       "When the fuel runs out, we will be so grateful."
-    ]
+    ],
+    "outcomes": {
+      "DOCK":        { "fuel": -20, "flags": { "corruption": 5 } },
+      "REJECT":      {               "flags": { "corruption": 3 } },
+      "INVESTIGATE": { "fuel": -10, "flags": { "corruption": 4 } },
+      "REFUEL":      { "fuel":  40, "flags": { "corruption": 5 } }
+    }
   }
 ]

@@ -11,6 +11,24 @@ const INITIAL_LAYERS = {
   deep: 0.0,
 };
 
+// Fallback outcomes used when a transmission doesn't override a given
+// decision. Per-transmission outcomes always win.
+const DEFAULT_OUTCOMES = {
+  DOCK:        { fuel: -2, flags: {} },
+  REJECT:      { fuel:  0, flags: {} },
+  INVESTIGATE: { fuel: -3, flags: {} },
+  REFUEL:      { fuel: 25, flags: {} },
+};
+
+function resolveOutcome(transmission, decision) {
+  const base = DEFAULT_OUTCOMES[decision] ?? { fuel: 0, flags: {} };
+  const override = transmission.outcomes?.[decision] ?? {};
+  return {
+    fuel: override.fuel ?? base.fuel,
+    flags: { ...(base.flags ?? {}), ...(override.flags ?? {}) },
+  };
+}
+
 // Single hook that owns the whole game session: audio engine, transmission
 // queue, fuel drain, and logbook. Components stay dumb.
 export function useStation() {
@@ -25,6 +43,7 @@ export function useStation() {
   const [waiting, setWaiting] = useState(false);
   const [gamePhase, setGamePhase] = useState(0);
   const [fuelLevel, setFuelLevel] = useState(100);
+  const [flags, setFlags] = useState({});
   const [flickering, setFlickering] = useState(false);
 
   const engineRef = useRef(null);
@@ -142,11 +161,14 @@ export function useStation() {
   const decide = useCallback(
     (decision) => {
       if (!currentTransmission) return;
+      const outcome = resolveOutcome(currentTransmission, decision);
+
       const entry = {
         callsign: currentTransmission.callsign,
         freq: currentTransmission.freq,
         phase: currentTransmission.phase,
         decision,
+        outcome,
         time: new Date().toLocaleTimeString('en-GB', { hour12: false }),
       };
       setLogbook((prev) => [...prev, entry]);
@@ -154,11 +176,17 @@ export function useStation() {
       setDisplayed([]);
       setTypingText('');
 
-      if (decision === 'DOCK' && currentTransmission.phase >= 2) {
-        setFuelLevel((f) => Math.max(0, f - 10));
+      if (outcome.fuel) {
+        setFuelLevel((f) => Math.max(0, Math.min(100, f + outcome.fuel)));
       }
-      if (decision === 'REFUEL') {
-        setFuelLevel((f) => Math.min(100, f + 25));
+      if (outcome.flags && Object.keys(outcome.flags).length > 0) {
+        setFlags((prev) => {
+          const next = { ...prev };
+          for (const [k, delta] of Object.entries(outcome.flags)) {
+            next[k] = (next[k] ?? 0) + delta;
+          }
+          return next;
+        });
       }
 
       setTxIndex((prev) => prev + 1);
@@ -182,6 +210,7 @@ export function useStation() {
     waiting,
     gamePhase,
     fuelLevel,
+    flags,
     flickering,
     decide,
   };

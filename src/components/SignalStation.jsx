@@ -34,6 +34,7 @@ export default function SignalStation() {
       <TopBar
         gamePhase={station.gamePhase}
         fuelLevel={station.fuelLevel}
+        flags={station.flags}
         logCount={station.logbook.length}
         showLog={showLog}
         onToggleLog={() => setShowLog((v) => !v)}
@@ -78,20 +79,38 @@ function SplashScreen({ onStart }) {
   );
 }
 
-function TopBar({ gamePhase, fuelLevel, logCount, showLog, onToggleLog }) {
+const FLAG_COLORS = { trust: '#3a7', corruption: '#a2f' };
+
+function TopBar({ gamePhase, fuelLevel, flags, logCount, showLog, onToggleLog }) {
   const fuelColor = fuelLevel < 30 ? '#c53' : fuelLevel < 60 ? '#ca3' : '#3a7';
+  const visibleFlags = Object.entries(flags || {}).filter(([, v]) => v !== 0);
   return (
     <div style={styles.topBar}>
       <span style={{ opacity: 0.5 }}>Signal Station</span>
       <div style={{ display: 'flex', gap: 20, alignItems: 'center' }}>
         <span style={{ color: PHASE_COLORS[gamePhase] }}>Phase {gamePhase}</span>
         <span style={{ color: fuelColor }}>Fuel: {Math.round(fuelLevel)}%</span>
+        {visibleFlags.map(([key, val]) => (
+          <span key={key} style={{ color: FLAG_COLORS[key] ?? '#7a8a7a' }}>
+            {key}: {val > 0 ? `+${val}` : val}
+          </span>
+        ))}
         <span style={{ cursor: 'pointer', opacity: 0.7 }} onClick={onToggleLog}>
           [{showLog ? 'Radio' : `Log (${logCount})`}]
         </span>
       </div>
     </div>
   );
+}
+
+function formatOutcome(outcome) {
+  if (!outcome) return '';
+  const parts = [];
+  if (outcome.fuel) parts.push(`fuel ${outcome.fuel > 0 ? '+' : ''}${outcome.fuel}`);
+  for (const [k, v] of Object.entries(outcome.flags || {})) {
+    if (v) parts.push(`${k} ${v > 0 ? '+' : ''}${v}`);
+  }
+  return parts.join('  ');
 }
 
 function LeftPanel({ layers, onLayer, fuelLevel }) {
@@ -258,6 +277,11 @@ function Logbook({ entries }) {
                 </span>{' '}
                 → <span style={{ color: accent }}>{entry.decision}</span>
               </div>
+              {formatOutcome(entry.outcome) && (
+                <div style={{ marginTop: 4, opacity: 0.45, fontSize: 10 }}>
+                  {formatOutcome(entry.outcome)}
+                </div>
+              )}
             </div>
           );
         })
