@@ -5,3 +5,7 @@ dist
 .DS_Store
 .env
 .env.local
+
+# Local-only Claude state (project-shared config stays committed)
+.claude/settings.local.json
+CLAUDE.local.md
