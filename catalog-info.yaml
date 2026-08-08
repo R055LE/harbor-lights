@@ -1,0 +1,21 @@
+# Generated from catalog/fleet.yaml in R055LE/runbook. Do not edit here.
+# Change the source and run `scripts/catalog.py apply`; edits made here
+# are reported as drift and overwritten.
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: harbor-lights
+  annotations:
+    github.com/project-slug: R055LE/harbor-lights
+  tags:
+    - cosmic-horror
+    - creative
+    - game
+    - javascript
+    - prototype
+spec:
+  type: game
+  lifecycle: experimental
+  owner: R055LE
+  domain: creative
+  tier: 3
